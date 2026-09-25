@@ -1,0 +1,22 @@
+# Python environments
+.venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Packaging artefacts
+dist/
+build/
+*.egg-info/
+
+# Tool caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local environment / secrets
+.env
+
+# macOS
+.DS_Store
