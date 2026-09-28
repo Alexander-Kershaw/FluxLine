@@ -1,6 +1,8 @@
-from datetime import date
+from datetime import date, datetime, timezone
 import httpx
 from fluxline.ingestion.elexon.models import ElexonFuelHHResponse
+from fluxline.ingestion.elexon.parser import parse_fuelhh_response
+from fluxline.ingestion.http import HttpResponseSnapshot
 
 """
 =========================================================================================================
@@ -31,11 +33,12 @@ class ElexonClient:
     def __init__(self, http_client: httpx.Client) -> None:
         self._http_client = http_client
 
-    def fetch_fuelhh(
+    # Fetching the raw FUELHH data (as HTTP response snapshot)
+    def fetch_fuelhh_raw(
             self,
             settlement_date_from: date,
             settlement_date_to: date
-    ) -> ElexonFuelHHResponse:
+    ) -> HttpResponseSnapshot:
 
         if settlement_date_from > settlement_date_to:
             raise ValueError("settlement_date_from must be less than or equal to settlement_date_to")
@@ -51,4 +54,24 @@ class ElexonClient:
 
         response.raise_for_status()
 
-        return ElexonFuelHHResponse.model_validate(response.json())
+        return HttpResponseSnapshot(
+            url=str(response.request.url),
+            status_code=response.status_code,
+            received_at=datetime.now(timezone.utc),
+            headers=dict(response.headers),
+            body=response.content
+        )
+
+    # Featching AND validating the FUELHH data
+    def fetch_fuelhh(
+            self,
+            settlement_date_from: date,
+            settlement_date_to: date
+    ) -> ElexonFuelHHResponse:
+
+        raw_response_snapshot: HttpResponseSnapshot = self.fetch_fuelhh_raw(
+            settlement_date_from=settlement_date_from,
+            settlement_date_to=settlement_date_to
+        )
+
+        return parse_fuelhh_response(json_body=raw_response_snapshot.body)
