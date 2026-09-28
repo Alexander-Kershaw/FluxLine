@@ -428,8 +428,14 @@ Settlement periods: 48
 Fuel types: 20
 Rows per settlement period: 20
 Null values: 0
-Candidate-key duplicates: 0
+Candidate key duplicates: 0
 Records with negative generation: 321
+
+**Observed fuel types:**
+```
+Fuel types (20):
+['BIOMASS', 'CCGT', 'COAL', 'INTELEC', 'INTEW', 'INTFR', 'INTGRNL', 'INTIFA2', 'INTIRL', 'INTNED', 'INTNEM', 'INTNSL', 'INTVKL', 'NPSHYD', 'NUCLEAR', 'OCGT', 'OIL', 'OTHER', 'PS', 'WIND']
+```
 
 **Observed grain:**
 settlementDate × settlementPeriod × fuelType
