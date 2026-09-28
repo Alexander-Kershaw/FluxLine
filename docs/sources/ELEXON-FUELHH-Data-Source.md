@@ -416,3 +416,25 @@ Ingestion implementation:
 Next action:
 
 > Perform a live API probe and inspect the response before writing application abstractions.
+
+---
+
+# 20. Probe Observation
+
+**Observed on 2026-09-20:**
+
+Records: 960
+Settlement periods: 48
+Fuel types: 20
+Rows per settlement period: 20
+Null values: 0
+Candidate-key duplicates: 0
+Records with negative generation: 321
+
+**Observed grain:**
+settlementDate × settlementPeriod × fuelType
+
+Historical identity remains under investigation because Elexon
+supports publication time retrieval and superseded dataset records.
+
+---
